@@ -4,16 +4,12 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 public class HttpClient {
-    private final RestClient restClient;
 
-    public HttpClient() {
-        this.restClient = RestClient.builder()
+    public static  <T> T getData(String addToAddress, Class<T> tClass) {
+        var restClient = RestClient.builder()
                 .baseUrl("http://gutendex.com/books")
                 .requestFactory(new HttpComponentsClientHttpRequestFactory())
                 .build();
-    }
-
-    public <T> T getData(String addToAddress, Class<T> tClass) {
         return restClient.get()
                 .uri("?search=" + addToAddress)
                 .retrieve()
