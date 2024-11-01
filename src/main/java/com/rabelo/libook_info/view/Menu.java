@@ -46,6 +46,8 @@ public class Menu {
     private void addInitialCommands() {
         commands.put(1, options::searchBookByTitleAndAuthorsName);
         commands.put(2, options::listBooksRegistered);
+        commands.put(3, options::listAuthorsRegistered);
+        commands.put(4, options::listAuthorsAliveInYear);
     }
 
     public void displayOptions() {
@@ -53,6 +55,8 @@ public class Menu {
         System.out.println("""
                 1) Search book by title
                 2) List all books registered
+                3) List authors registered
+                4) List authors alive in a given year
                 
                 0) Exit
                 """);

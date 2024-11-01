@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Year;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 
 import static com.rabelo.libook_info.service.HttpClient.getData;
@@ -28,14 +31,11 @@ public class Options {
         var title = scanner.nextLine().trim();
         getDataFromApi(title);
         var books = bookRepository.searchByTitleOrAuthorsName(title);
-        System.out.println("BOOKS FOUND:");
-        books.forEach(System.out::println);
-        System.out.println();
+        printList("BOOKS FOUND:", books);
     }
 
     private void getDataFromApi(String title) {
         var data = getData(URLEncoder.encode(title, StandardCharsets.UTF_8), DataDTO.class);
-        System.out.println(data.results());
         data.results().stream()
                 .filter(b -> !bookRepository.existsByTitle(b.title()))
                 .forEach(b -> {
@@ -51,8 +51,31 @@ public class Options {
     }
 
     public void listBooksRegistered() {
-        System.out.println("\nBOOKS REGISTERED:\n");
-        bookRepository.findAll().forEach(System.out::println);
-        System.out.println();
+        printList("BOOKS REGISTERED:", bookRepository.findAll());
+    }
+
+    public void listAuthorsRegistered() {
+        printList("AUTHORS REGISTERED:", authorRepository.findAll());
+    }
+
+    private <T> void printList(String message, List<T> list) {
+        if (!list.isEmpty()) {
+            System.out.println( "\n" + message + "\n");
+            System.out.println(list);
+            list.forEach(System.out::println);
+            System.out.println();
+        } else {
+            System.out.println("\nNo results :(\n");
+        }
+    }
+
+    public void listAuthorsAliveInYear() {
+        System.out.println("Enter a year in the format (YYYY):");
+        try {
+            var year = Year.parse(scanner.nextLine().trim());
+            printList("AUTHORS ALIVE IN :" + year, authorRepository.searchAuthorsAliveInYear(year));
+        } catch (DateTimeParseException e) {
+            System.err.println("Error: Value can not be parsed :(");
+        }
     }
 }
