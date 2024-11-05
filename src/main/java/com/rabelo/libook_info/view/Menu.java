@@ -35,7 +35,7 @@ public class Menu {
             try {
                 command = Integer.parseInt(scanner.nextLine());
                 if (command == 0 || commands.containsKey(command)) break;
-                System.err.println("Invalid command. Must be 1. Try again:");
+                System.err.println("Invalid command. Must be 0-" + commands.size() + ". Try again:");
             } catch (NumberFormatException e) {
                 System.err.println("Invalid Input. Must be a number. Try again:");
             }
@@ -48,6 +48,7 @@ public class Menu {
         commands.put(2, options::listBooksRegistered);
         commands.put(3, options::listAuthorsRegistered);
         commands.put(4, options::listAuthorsAliveInYear);
+        commands.put(5, options::listBooksByLanguage);
     }
 
     public void displayOptions() {
@@ -57,6 +58,7 @@ public class Menu {
                 2) List all books registered
                 3) List authors registered
                 4) List authors alive in a given year
+                5) List books by language
                 
                 0) Exit
                 """);

@@ -1,6 +1,6 @@
 package com.rabelo.libook_info.model;
 
-import com.rabelo.libook_info.model.dto.AuthorDTO;
+import com.rabelo.libook_info.dto.AuthorDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

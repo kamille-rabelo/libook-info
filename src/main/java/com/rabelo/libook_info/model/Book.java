@@ -1,7 +1,7 @@
 package com.rabelo.libook_info.model;
 
 import com.rabelo.libook_info.enumeration.Language;
-import com.rabelo.libook_info.model.dto.BookDTO;
+import com.rabelo.libook_info.dto.BookDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

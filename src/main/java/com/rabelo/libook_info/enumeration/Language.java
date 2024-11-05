@@ -14,4 +14,10 @@ public enum Language {
     OTHER("other language");
 
     private String language;
+
+    public static void printLanguages() {
+        for (Language language : Language.values()) {
+            System.out.println(language + " -> " + language.getLanguage());
+        }
+    }
 }

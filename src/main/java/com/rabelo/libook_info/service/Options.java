@@ -1,8 +1,9 @@
 package com.rabelo.libook_info.service;
 
+import com.rabelo.libook_info.enumeration.Language;
 import com.rabelo.libook_info.model.Author;
 import com.rabelo.libook_info.model.Book;
-import com.rabelo.libook_info.model.dto.DataDTO;
+import com.rabelo.libook_info.dto.DataDTO;
 import com.rabelo.libook_info.repository.AuthorRepository;
 import com.rabelo.libook_info.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,6 @@ public class Options {
     private <T> void printList(String message, List<T> list) {
         if (!list.isEmpty()) {
             System.out.println( "\n" + message + "\n");
-            System.out.println(list);
             list.forEach(System.out::println);
             System.out.println();
         } else {
@@ -75,7 +75,20 @@ public class Options {
             var year = Year.parse(scanner.nextLine().trim());
             printList("AUTHORS ALIVE IN :" + year, authorRepository.searchAuthorsAliveInYear(year));
         } catch (DateTimeParseException e) {
-            System.err.println("Error: Value can not be parsed :(");
+            System.err.println("Error: Value not in format (YYYY) :(");
+        }
+    }
+
+    public void listBooksByLanguage() {
+        System.out.println("Type in an ISO (e.g. es):");
+        Language.printLanguages();
+        var iso = scanner.nextLine().trim();
+        try {
+            var language = Language.valueOf(iso.toUpperCase());
+            var booksFound = bookRepository.findByLanguage(language);
+            printList("BOOKS IN " + language.getLanguage().toUpperCase() + ":", booksFound);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error: Value isn't an ISO :(");
         }
     }
 }

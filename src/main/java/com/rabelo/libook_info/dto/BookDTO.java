@@ -1,4 +1,4 @@
-package com.rabelo.libook_info.model.dto;
+package com.rabelo.libook_info.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
