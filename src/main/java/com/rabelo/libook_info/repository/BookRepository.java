@@ -13,9 +13,9 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
     boolean existsByTitle(String title);
 
-    @Query("SELECT b FROM Book b JOIN b.authors a WHERE a.name ILIKE %:toSearch%" +
-            " OR b.title ILIKE %:toSearch% ORDER BY b.title")
-    List<Book> searchByTitleOrAuthorsName(String toSearch);
+    @Query("SELECT b FROM Book b JOIN b.authors a WHERE a.name ILIKE %:title%" +
+            " ORDER BY b.title")
+    List<Book> searchByTitle(String title);
 
     List<Book> findByLanguage(Language language);
 
@@ -24,4 +24,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<BookLanguageStatisticsDTO> listStatsByLanguage();
 
     List<Book> findTop10ByOrderByTotalDownloadsDesc();
+
+    List<Book> findByAuthorsNameContainingIgnoreCaseOrderByAuthorsName(String authorName);
 }

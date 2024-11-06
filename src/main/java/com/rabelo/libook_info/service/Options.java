@@ -27,11 +27,11 @@ public class Options {
     @Autowired
     private AuthorRepository authorRepository;
 
-    public void searchBookByTitleAndAuthorsName() {
+    public void searchBookByTitle() {
         System.out.println("Enter a book by title:");
         var title = scanner.nextLine().trim();
         getDataFromApi(title);
-        var books = bookRepository.searchByTitleOrAuthorsName(title);
+        var books = bookRepository.searchByTitle(title);
         printList("BOOKS FOUND:", books);
     }
 
@@ -103,5 +103,12 @@ public class Options {
     public void listTop10MostDownloadedBooks() {
         var top10 = bookRepository.findTop10ByOrderByTotalDownloadsDesc();
         printList("TOP 10 MOST DOWNLOADED BOOKS:", top10);
+    }
+
+    public void searchAuthorByName() {
+        System.out.println("Enter an author's name:");
+        var authorName = scanner.nextLine().trim();
+        var authorBooks = bookRepository.findByAuthorsNameContainingIgnoreCaseOrderByAuthorsName(authorName);
+        printList("RESULTS FOR \"" + authorName.toUpperCase() + "\":", authorBooks);
     }
 }
