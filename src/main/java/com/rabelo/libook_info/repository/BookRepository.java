@@ -24,6 +24,4 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<BookLanguageStatisticsDTO> listStatsByLanguage();
 
     List<Book> findTop10ByOrderByTotalDownloadsDesc();
-
-    List<Book> findByAuthorsNameContainingIgnoreCaseOrderByAuthorsName(String authorName);
 }

@@ -14,4 +14,6 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
 
     @Query("SELECT a FROM Author a WHERE a.birthYear <= :year AND a.deathYear >= :year ORDER BY a.birthYear")
     List<Author> searchAuthorsAliveInYear(Year year);
+
+    List<Author> findByNameContainingIgnoreCaseOrderByName(String authorName);
 }

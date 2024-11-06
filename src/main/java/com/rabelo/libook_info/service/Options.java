@@ -1,9 +1,9 @@
 package com.rabelo.libook_info.service;
 
+import com.rabelo.libook_info.dto.DataDTO;
 import com.rabelo.libook_info.enumeration.Language;
 import com.rabelo.libook_info.model.Author;
 import com.rabelo.libook_info.model.Book;
-import com.rabelo.libook_info.dto.DataDTO;
 import com.rabelo.libook_info.repository.AuthorRepository;
 import com.rabelo.libook_info.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Year;
 import java.time.format.DateTimeParseException;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,7 +28,7 @@ public class Options {
     @Autowired
     private AuthorRepository authorRepository;
 
-    public void searchBookByTitle() {
+    public void searchBooksByTitle() {
         System.out.println("Enter a book by title:");
         var title = scanner.nextLine().trim();
         getDataFromApi(title);
@@ -105,10 +106,32 @@ public class Options {
         printList("TOP 10 MOST DOWNLOADED BOOKS:", top10);
     }
 
-    public void searchAuthorByName() {
+    public void searchAuthorsByName() {
         System.out.println("Enter an author's name:");
         var authorName = scanner.nextLine().trim();
-        var authorBooks = bookRepository.findByAuthorsNameContainingIgnoreCaseOrderByAuthorsName(authorName);
-        printList("RESULTS FOR \"" + authorName.toUpperCase() + "\":", authorBooks);
+        var authors = authorRepository.findByNameContainingIgnoreCaseOrderByName(authorName);
+        if (!authors.isEmpty()) {
+            System.out.println("\nRESULTS FOR \"" + authorName.toUpperCase() + "\":\n");
+            authors.forEach(a -> {
+                var books = a.getBooks();
+                printAuthorStatistics(a, books);
+                printList("BOOKS:", books);
+            });
+        } else {
+            System.out.println("No results for " + authorName + " :(");
+        }
+    }
+
+    private void printAuthorStatistics(Author a, List<Book> books) {
+        var stats = new DoubleSummaryStatistics();
+        System.out.println("AUTHOR: " + a);
+        books.forEach(b -> stats.accept(b.getTotalDownloads()));
+        System.out.printf("""
+                                Number of books: %d
+                                Average downloads: %.2f
+                                Total downloads: %.2f
+                                Most popular: %.2f
+                                """,
+                stats.getCount(), stats.getAverage(), stats.getSum(), stats.getMax());
     }
 }

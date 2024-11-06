@@ -44,27 +44,27 @@ public class Menu {
     }
 
     private void addInitialCommands() {
-        commands.put(1, options::searchBookByTitle);
+        commands.put(1, options::searchBooksByTitle);
         commands.put(2, options::listBooksRegistered);
         commands.put(3, options::listAuthorsRegistered);
         commands.put(4, options::listAuthorsAliveInYear);
         commands.put(5, options::listBooksByLanguage);
         commands.put(6, options::listBookLanguageStatistics);
         commands.put(7, options::listTop10MostDownloadedBooks);
-        commands.put(8, options::searchAuthorByName);
+        commands.put(8, options::searchAuthorsByName);
     }
 
     public void displayOptions() {
         System.out.println("********************************");
         System.out.println("""
-                1) Search book by title
+                1) Search books by title
                 2) List all books registered
                 3) List authors registered
                 4) List authors alive in a given year
                 5) List books by language
                 6) List book language statistics
                 7) List top 10 most downloaded books
-                8) Search author by name
+                8) Search authors by name
                 
                 0) Exit
                 """);
