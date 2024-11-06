@@ -86,9 +86,17 @@ public class Options {
         try {
             var language = Language.valueOf(iso.toUpperCase());
             var booksFound = bookRepository.findByLanguage(language);
-            printList("BOOKS IN " + language.getLanguage().toUpperCase() + ":", booksFound);
+            printList("BOOKS IN " + language.getLanguage().toUpperCase() + " (" + booksFound.size() +") :", booksFound);
         } catch (IllegalArgumentException e) {
             System.err.println("Error: Value isn't an ISO :(");
         }
+    }
+
+    public void listBookLanguageStatistics() {
+        var stats = bookRepository.listStatsByLanguage();
+        System.out.println("\nBOOK COUNT BY LANGUAGE:\n");
+        stats.forEach(s -> System.out.printf("Books in %s: %d - number of downloads: %.2f -  average: %.2f\n",
+                s.getLanguage(), s.getCount(), s.getDownloads(), s.getDownloads() / s.getCount()));
+        System.out.println();
     }
 }

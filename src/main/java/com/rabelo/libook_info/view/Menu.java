@@ -49,6 +49,7 @@ public class Menu {
         commands.put(3, options::listAuthorsRegistered);
         commands.put(4, options::listAuthorsAliveInYear);
         commands.put(5, options::listBooksByLanguage);
+        commands.put(6, options::listBookLanguageStatistics);
     }
 
     public void displayOptions() {
@@ -59,6 +60,7 @@ public class Menu {
                 3) List authors registered
                 4) List authors alive in a given year
                 5) List books by language
+                6) List book language statistics
                 
                 0) Exit
                 """);
