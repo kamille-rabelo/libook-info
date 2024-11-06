@@ -50,6 +50,7 @@ public class Menu {
         commands.put(4, options::listAuthorsAliveInYear);
         commands.put(5, options::listBooksByLanguage);
         commands.put(6, options::listBookLanguageStatistics);
+        commands.put(7, options::listTop10MostDownloadedBooks);
     }
 
     public void displayOptions() {
@@ -61,6 +62,7 @@ public class Menu {
                 4) List authors alive in a given year
                 5) List books by language
                 6) List book language statistics
+                7) List top 10 most downloaded books
                 
                 0) Exit
                 """);

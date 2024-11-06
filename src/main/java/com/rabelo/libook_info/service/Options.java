@@ -95,8 +95,13 @@ public class Options {
     public void listBookLanguageStatistics() {
         var stats = bookRepository.listStatsByLanguage();
         System.out.println("\nBOOK COUNT BY LANGUAGE:\n");
-        stats.forEach(s -> System.out.printf("Books in %s: %d - number of downloads: %.2f -  average: %.2f\n",
+        stats.forEach(s -> System.out.printf("Books in %s: %d - number of downloads: %.2f - average: %.2f\n",
                 s.getLanguage(), s.getCount(), s.getDownloads(), s.getDownloads() / s.getCount()));
         System.out.println();
+    }
+
+    public void listTop10MostDownloadedBooks() {
+        var top10 = bookRepository.findTop10ByOrderByTotalDownloadsDesc();
+        printList("TOP 10 MOST DOWNLOADED BOOKS:", top10);
     }
 }

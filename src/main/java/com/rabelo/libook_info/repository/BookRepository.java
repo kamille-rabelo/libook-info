@@ -22,4 +22,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("SELECT b.language AS language, COUNT(b.title) AS count, SUM(b.totalDownloads) AS downloads" +
             " FROM Book b GROUP BY b.language ORDER BY COUNT(b.title) DESC")
     List<BookLanguageStatisticsDTO> listStatsByLanguage();
+
+    List<Book> findTop10ByOrderByTotalDownloadsDesc();
 }
