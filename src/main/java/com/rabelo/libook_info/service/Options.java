@@ -29,15 +29,17 @@ public class Options {
     private AuthorRepository authorRepository;
 
     public void searchBooksByTitle() {
-        System.out.println("Enter a book by title:");
+        System.out.println("Enter a book title:");
         var title = scanner.nextLine().trim();
         getDataFromApi(title);
-        var books = bookRepository.searchByTitle(title);
+
+        var books = bookRepository.findByTitleContainingIgnoreCaseOrderByTitle(title);
         printList("BOOKS FOUND:", books);
     }
 
     private void getDataFromApi(String title) {
         var data = getData(URLEncoder.encode(title, StandardCharsets.UTF_8), DataDTO.class);
+
         data.results().stream()
                 .filter(b -> !bookRepository.existsByTitle(b.title()))
                 .forEach(b -> {
@@ -53,11 +55,11 @@ public class Options {
     }
 
     public void listBooksRegistered() {
-        printList("BOOKS REGISTERED:", bookRepository.findAll());
+        printList("BOOKS REGISTERED:", bookRepository.findAllByOrderByTitle());
     }
 
     public void listAuthorsRegistered() {
-        printList("AUTHORS REGISTERED:", authorRepository.findAll());
+        printList("AUTHORS REGISTERED:", authorRepository.findAllByOrderByName());
     }
 
     private <T> void printList(String message, List<T> list) {
@@ -65,29 +67,33 @@ public class Options {
             System.out.println( "\n" + message + "\n");
             list.forEach(System.out::println);
             System.out.println();
+
         } else {
             System.out.println("\nNo results :(\n");
         }
     }
 
-    public void listAuthorsAliveInYear() {
+    public void searchAuthorsAliveInYear() {
         System.out.println("Enter a year in the format (YYYY):");
         try {
             var year = Year.parse(scanner.nextLine().trim());
-            printList("AUTHORS ALIVE IN :" + year, authorRepository.searchAuthorsAliveInYear(year));
+            printList("AUTHORS ALIVE IN " + year + ":", authorRepository.searchAuthorsAliveInYear(year));
+
         } catch (DateTimeParseException e) {
             System.err.println("Error: Value not in format (YYYY) :(");
         }
     }
 
-    public void listBooksByLanguage() {
+    public void searchBooksByLanguage() {
         System.out.println("Type in an ISO (e.g. es):");
         Language.printLanguages();
         var iso = scanner.nextLine().trim();
+
         try {
             var language = Language.valueOf(iso.toUpperCase());
             var booksFound = bookRepository.findByLanguage(language);
             printList("BOOKS IN " + language.getLanguage().toUpperCase() + " (" + booksFound.size() +") :", booksFound);
+
         } catch (IllegalArgumentException e) {
             System.err.println("Error: Value isn't an ISO :(");
         }
@@ -96,6 +102,7 @@ public class Options {
     public void listBookLanguageStatistics() {
         var stats = bookRepository.listStatsByLanguage();
         System.out.println("\nBOOK COUNT BY LANGUAGE:\n");
+
         stats.forEach(s -> System.out.printf("Books in %s: %d - number of downloads: %.2f - average: %.2f\n",
                 s.getLanguage(), s.getCount(), s.getDownloads(), s.getDownloads() / s.getCount()));
         System.out.println();
@@ -110,6 +117,7 @@ public class Options {
         System.out.println("Enter an author's name:");
         var authorName = scanner.nextLine().trim();
         var authors = authorRepository.findByNameContainingIgnoreCaseOrderByName(authorName);
+
         if (!authors.isEmpty()) {
             System.out.println("\nRESULTS FOR \"" + authorName.toUpperCase() + "\":\n");
             authors.forEach(a -> {
@@ -126,6 +134,7 @@ public class Options {
         var stats = new DoubleSummaryStatistics();
         System.out.println("AUTHOR: " + a);
         books.forEach(b -> stats.accept(b.getTotalDownloads()));
+
         System.out.printf("""
                                 Number of books: %d
                                 Average downloads: %.2f

@@ -35,6 +35,9 @@ public class Author {
 
     @Override
     public String toString() {
-        return name + " (" + birthYear + " - " + deathYear + ") ";
+        if (birthYear != null && deathYear != null) {
+            return name + " (" + birthYear + " - " + deathYear + ") ";
+        }
+        return name + " ";
     }
 }

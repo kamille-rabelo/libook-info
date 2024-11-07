@@ -16,4 +16,6 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
     List<Author> searchAuthorsAliveInYear(Year year);
 
     List<Author> findByNameContainingIgnoreCaseOrderByName(String authorName);
+
+    List<Author> findAllByOrderByName();
 }
